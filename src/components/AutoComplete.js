@@ -7,12 +7,13 @@ const AutoComplete = ({ setCoordinate }) => {
 	const handlePlaceChanged = () => {
 		const [place] = inputRef.current.getPlaces();
 		if (place) {
-			console.log(place.formatted_address);
+			const name = place.formatted_address;
 			const lat = place.geometry.location.lat();
 			const lng = place.geometry.location.lng();
 			setCoordinate({
-				lat: lat,
-				lng: lng,
+				name,
+				lat,
+				lng,
 			});
 		}
 	};

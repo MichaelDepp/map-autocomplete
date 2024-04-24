@@ -12,7 +12,7 @@ const MapContainer = ({ coordinate }) => {
 			<Map
 				defaultCenter={position}
 				center={coordinate}
-				disableDefaultUI={true}
+				disableDefaultUI={false}
 				defaultZoom={18}
 				style={{
 					borderRadius: '20px',
