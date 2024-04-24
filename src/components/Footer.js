@@ -6,7 +6,7 @@ const Footer = () => {
 
 	return (
 		<footer
-			className={`bg-gray-800 text-sm ${theme === 'light' ? 'text-dark' : 'text-white'} pt-4 px-8 text-center self-end`}
+			className={`bg-gray-800 text-sm ${theme === 'light' ? 'text-dark' : 'text-white'} pt-2 px-8 text-center self-end`}
 		>
 			Developed by{' '}
 			<a href="https://github.com/MichaelDepp" target="_blank" rel="noopener noreferrer" className="font-400">

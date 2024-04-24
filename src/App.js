@@ -53,7 +53,7 @@ const App = () => {
 
 	const renderMapContent = () => (
 		<>
-			<div className="absolute top-0 left-0 right-0 z-50 p-2 flex justify-center">
+			<div className="absolute top-1 left-0 right-0 z-50 p-2 flex justify-center">
 				<AutoComplete setCoordinate={setPlace} />
 			</div>
 			<MapContainer coordinate={place} />
@@ -72,7 +72,7 @@ const App = () => {
 				<div className="basis-1/12 mb-0 md:mb-4">
 					<HeaderBar handleFavouriteButtonClick={handleFavouriteButtonClick} setShowFavourites={setShowFavourites} />
 				</div>
-				<div className="basis-10/12 px-4 md:px-0 relative">
+				<div className="basis-10/12 px-6 md:px-0 relative">
 					<LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY} libraries={['places']}>
 						{showFavourites ? renderFavouriteContent(savedPlaces) : renderMapContent()}
 					</LoadScript>
