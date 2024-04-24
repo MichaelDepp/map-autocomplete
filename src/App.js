@@ -9,58 +9,61 @@ import { useTheme } from './ThemeContext';
 import { LoadScript } from '@react-google-maps/api';
 
 const App = () => {
-	const [coordinate, setCoordinate] = useState(null);
+	const [place, setPlace] = useState(null);
 	const [showToast, setShowToast] = useState(false);
+	const [toastMessage, setToastMessage] = useState('');
+	const [toastType, setToastType] = useState('success');
 	const [showFavourites, setShowFavourites] = useState(false);
+	const [savedPlaces, setSavedPlaces] = useState([]);
 	const { theme } = useTheme();
 
 	useEffect(() => {
-		console.log('This is value -> ', coordinate);
-	}, [coordinate]);
+		const savedValue = JSON.parse(localStorage.getItem('savedPlaces'));
+		if (savedValue) {
+			setSavedPlaces(savedValue);
+		}
+	}, []);
 
 	const handleFavouriteButtonClick = () => {
-		setShowToast(true);
+		if (savedPlaces && savedPlaces.some((p) => p.name === place.name)) {
+			setToastMessage('Place already exist in favourites!');
+			setToastType('warning');
+			setShowToast(true);
+		} else {
+			setSavedPlaces([...savedPlaces, place]);
+			localStorage.setItem('savedPlaces', JSON.stringify([...savedPlaces, place]));
+			setToastMessage('Place added to favourites!');
+			setToastType('success');
+			setShowToast(true);
+		}
 	};
 
 	const handleCloseToast = () => {
 		setShowToast(false);
 	};
 
-	const favouritePlaces = [
-		{
-			name: 'New York City',
-			latitude: 40.7128,
-			longitude: -74.006,
-		},
-		{
-			name: 'Tokyo',
-			latitude: 35.6895,
-			longitude: 139.6917,
-		},
-		{
-			name: 'London',
-			latitude: 51.5074,
-			longitude: -0.1278,
-		},
-		{
-			name: 'Paris',
-			latitude: 48.8566,
-			longitude: 2.3522,
-		},
-		// Add more places as needed
-	];
+	const handlePlacesDelete = (name) => {
+		const updatedPlaces = savedPlaces.filter((place) => place.name !== name);
+		setSavedPlaces(updatedPlaces);
+		localStorage.setItem('savedPlaces', JSON.stringify(updatedPlaces));
+		setToastMessage('Deleted Successfully!');
+		setToastType('success');
+		setShowToast(true);
+	};
 
 	const renderMapContent = () => (
 		<>
 			<div className="absolute top-0 left-0 right-0 z-50 p-2 flex justify-center">
-				<AutoComplete setCoordinate={setCoordinate} />
+				<AutoComplete setCoordinate={setPlace} />
 			</div>
-			<MapContainer coordinate={coordinate} />
+			<MapContainer coordinate={place} />
 		</>
 	);
 
-	const renderFavouriteContent = (favouritePlaces) => {
-		return favouritePlaces.map((place, index) => <FavouritePlace key={index} place={place} />);
+	const renderFavouriteContent = (savedPlaces) => {
+		return savedPlaces.map((place, key) => (
+			<FavouritePlace key={key} place={place} handlePlacesDelete={handlePlacesDelete} />
+		));
 	};
 
 	return (
@@ -71,10 +74,10 @@ const App = () => {
 				</div>
 				<div className="basis-10/12 px-4 md:px-0 relative">
 					<LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_API_KEY} libraries={['places']}>
-						{showFavourites ? renderFavouriteContent(favouritePlaces) : renderMapContent()}
+						{showFavourites ? renderFavouriteContent(savedPlaces) : renderMapContent()}
 					</LoadScript>
 				</div>
-				{showToast && <Toast message="Place added to favourite!" type="success" onClose={handleCloseToast} />}
+				{showToast && <Toast message={toastMessage} type={toastType} onClose={handleCloseToast} />}
 				<div className="basis">
 					<Footer />
 				</div>
