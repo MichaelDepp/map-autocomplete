@@ -7,7 +7,7 @@ import Footer from './components/Footer';
 import Toast from './components/Toast';
 import FavouritePlace from './components/FavouritePlace';
 import { useTheme } from './ThemeContext';
-import voidImg from './void.png';
+import voidImg from './void.svg';
 
 const App = () => {
 	const [place, setPlace] = useState(null);
@@ -75,9 +75,11 @@ const App = () => {
 			));
 		} else {
 			return (
-				<div className="w-full h-64 bg-gray-300 grid place-items-center">
-					<img src={voidImg} alt="No Data" className="w-full md:w-3/5 object-contain pt-16 md:pt-4" />
-					<p className="text-lg font-semibold">No Favourite Place Found!</p>
+				<div className="w-full h-64 grid place-items-center">
+					<img src={voidImg} alt="No Data" className="w-full md:w-1/2 object-contain pt-16 md:pt-8" />
+					<p className={`mt-4 text-lg font-semibold ${theme === 'light' ? 'text-dark' : 'text-white'}`}>
+						No Favourite Place Found!
+					</p>
 				</div>
 			);
 		}
