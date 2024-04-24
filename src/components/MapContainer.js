@@ -8,7 +8,7 @@ const MapContainer = ({ coordinate }) => {
 	};
 
 	return (
-		<APIProvider apiKey={'AIzaSyCd8xOrhNvkxauR0TSSOJG5VxaO2p5b2Bg'}>
+		<APIProvider apiKey={process.env.REACT_APP_GOOGLE_API_KEY}>
 			<Map
 				defaultCenter={position}
 				center={coordinate}
