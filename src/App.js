@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { LoadScript } from '@react-google-maps/api';
 import HeaderBar from './components/HeaderBar';
 import MapContainer from './components/MapContainer';
 import AutoComplete from './components/AutoComplete';
@@ -6,7 +7,7 @@ import Footer from './components/Footer';
 import Toast from './components/Toast';
 import FavouritePlace from './components/FavouritePlace';
 import { useTheme } from './ThemeContext';
-import { LoadScript } from '@react-google-maps/api';
+import voidImg from './void.png';
 
 const App = () => {
 	const [place, setPlace] = useState(null);
@@ -24,17 +25,24 @@ const App = () => {
 		}
 	}, []);
 
+	useEffect(() => {
+		setPlace(place);
+	}, [place]);
+
 	const handleFavouriteButtonClick = () => {
 		if (savedPlaces && savedPlaces.some((p) => p.name === place.name)) {
 			setToastMessage('Place already exist in favourites!');
 			setToastType('warning');
 			setShowToast(true);
 		} else {
-			setSavedPlaces([...savedPlaces, place]);
-			localStorage.setItem('savedPlaces', JSON.stringify([...savedPlaces, place]));
-			setToastMessage('Place added to favourites!');
-			setToastType('success');
-			setShowToast(true);
+			if (place !== null) {
+				console.log('here', place);
+				setSavedPlaces([...savedPlaces, place]);
+				localStorage.setItem('savedPlaces', JSON.stringify([...savedPlaces, place]));
+				setToastMessage('Place added to favourites!');
+				setToastType('success');
+				setShowToast(true);
+			}
 		}
 	};
 
@@ -61,9 +69,18 @@ const App = () => {
 	);
 
 	const renderFavouriteContent = (savedPlaces) => {
-		return savedPlaces.map((place, key) => (
-			<FavouritePlace key={key} place={place} handlePlacesDelete={handlePlacesDelete} />
-		));
+		if (savedPlaces && savedPlaces.length > 0) {
+			return savedPlaces.map((place, key) => (
+				<FavouritePlace key={key} place={place} handlePlacesDelete={handlePlacesDelete} />
+			));
+		} else {
+			return (
+				<div className="w-full h-64 bg-gray-300 grid place-items-center">
+					<img src={voidImg} alt="No Data" className="w-full md:w-3/5 object-contain pt-16 md:pt-4" />
+					<p className="text-lg font-semibold">No Favourite Place Found!</p>
+				</div>
+			);
+		}
 	};
 
 	return (
