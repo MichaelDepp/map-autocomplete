@@ -1,4 +1,10 @@
-# Google Autocomplete Places - React 🗺️📌
+# Google Map Autocomplete Places - React 🗺️📌
+
+This is a Google Map Autocomplete web application built using [React.js](https://legacy.reactjs.org/), and [**TailwindCss**](https://tailwindcss.com/), developed by [**Michael**](https://github.com/MichaelDepp). The project is live hosted at [**Vercel**](https://vercel.com)
+
+## 🏟️ Deployed Link at Vercel
+
+[**https://map-autocomplete-peach.vercel.app/**](https://map-autocomplete-peach.vercel.app/)
 
 ## 🔋🙆‍♂️ Development Check
 
